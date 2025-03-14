@@ -1,2 +1,10 @@
 <h1>Pages#home</h1>
 <p>Find me in app/views/pages/home.html.erb</p>
+
+<form id="search" data-controller="search" data-search-token-value="<%= ENV["MAPS_KEY"] %>" class="d-flex my-5">
+            <input type="text" class="form-control flex-grow-1 me-2" placeholder="Type an address">
+            <input type="submit" value="Geocode!" class="btn btn-primary">
+</form>
+
+
+<div id="map" data-controller="map" data-map-origin-value="<%= @origin.to_json %>" data-map-destination-value="<%= @destination.to_json %>"></div>
