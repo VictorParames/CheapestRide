@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CheapestRide</title>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+<body>
+  <!-- Foto de usuário (opcional) -->
+  <div class="user-photo">
+    <%= image_tag "user-placeholder.jpg", class: "user-image", alt: "User Photo" %>
+  </div>
+
+  <!-- Container estilizado -->
+  <div class="styled-container">
+    <h1>Onde vamos?</h1>
+    <button class="search-button" onclick="openModal()">Bora</button>
+  </div>
+
+  <!-- Modal para Origem e Destino -->
+  <div id="searchModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">×</span>
+      <h2>Onde vamos?</h2>
+      <%= form_with url: search_path, method: :get, local: true do |form| %>
+        <div class="input-group">
+          <%= form.label :origin, "Origem" %>
+          <%= form.text_field :origin, placeholder: "Digite sua origem", class: "form-control" %>
+        </div>
+        <div class="input-group">
+          <%= form.label :destination, "Destino" %>
+          <%= form.text_field :destination, placeholder: "Digite seu destino", class: "form-control" %>
+        </div>
+        <%= form.submit "Bora", class: "search-button", onclick: "closeModal()" %>
+      <% end %>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      const modal = document.getElementById('searchModal');
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('active'), 10); // Pequeno delay para animação
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('searchModal');
+      modal.classList.remove('active');
+      setTimeout(() => modal.style.display = 'none', 300); // Tempo igual à transição
+    }
+  </script>
+</body>
+</html>
