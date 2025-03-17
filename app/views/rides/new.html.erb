@@ -1,12 +1,13 @@
-<h1>Rides Index</h1>
+<h1>Rides New</h1>
 <div class="container p-4">
 
   <%= simple_form_for @ride do |r| %>
   <%= r.input :pickup, input_html: {data: {address_autocomplete_target: "pickup"}},
-    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}%>
+    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}, class: ""}%>
   <%= r.input :dropoff, input_html: {data: {address_autocomplete_target: "dropoff"}},
-    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}%>
+    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}, class: ""}%>
   <%= r.submit %>
+
   <% end %>
 
   <div><div id="map"></div></div>

@@ -6,7 +6,7 @@ export default class extends Controller {
 
   static targets = ["pickup"]
   connect() {
-    his.geocoder = new MapboxGeocoder({
+    this.geocoder = new MapboxGeocoder({
       accessToken: this.apiKeyValue,
       types: "country,region,place,postcode,locality,neighborhood,address"
     })
@@ -20,5 +20,8 @@ export default class extends Controller {
 
   #clearInputValue() {
     this.addressTarget.value = ""
+  }
+  disconnect() {
+    this.geocoder.onRemove()
   }
 }
