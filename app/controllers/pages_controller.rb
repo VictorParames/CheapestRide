@@ -4,6 +4,7 @@ class PagesController < ApplicationController
   def home
     @origin = [-23.5648, -46.6518]
     @destination = [0, 0]
+    @destin = Destination.new
   end
 
   def index

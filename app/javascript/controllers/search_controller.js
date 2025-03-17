@@ -7,8 +7,7 @@ export default class extends Controller {
   }
   connect() {
     const showMapAndCoordinates = (userInput) => {
-      // TODO #3: Construct the URL (with apiKey & userInput)
-      // and make the fetch request to the mapbox API
+
       const url = `https://maps.googleapis.com/maps/api/geocode/json?address="${userInput}"&key=${this.tokenValue}`;
 
       fetch(url)
@@ -21,9 +20,7 @@ export default class extends Controller {
 
           console.log(lat);
           console.log(lng);
-          // Use these coordinates to call the displayCoordinates and injectMap functions
-          /* injectMap(lat, lng);
-          displayCoordinates(lat, lng) */;
+
         });
     };
     const formInput = document.querySelector("#search .form-control");
