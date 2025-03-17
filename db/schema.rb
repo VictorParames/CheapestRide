@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_17_151247) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_17_171646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,10 +30,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_151247) do
     t.float "dropoff_lng"
     t.text "pickup"
     t.float "pickup_lat"
-    t.string "pickup_lng_float"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "pickup_lng"
     t.index ["user_id"], name: "index_rides_on_user_id"
   end
 
