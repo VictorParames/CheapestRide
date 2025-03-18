@@ -108,7 +108,7 @@ export default class extends Controller {
       });
 
 
-    const encodedpath = getRouteDirections(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    getRouteDirections(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
     .then(routeData => {
       console.log(encoding.decodePath(routeData.routes[0].polyline.encodedPolyline));
 
