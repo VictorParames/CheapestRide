@@ -6,8 +6,9 @@ class RidesController < ApplicationController
 
   def show
     @origin = [Ride.find(params[:id]).pickup_lat, Ride.find(params[:id]).pickup_lng]
-    @destination = [Ride.find(params[:id]).pickup_lat,Ride.find(params[:id]).pickup_lng]
+    @destination = [Ride.find(params[:id]).dropoff_lat,Ride.find(params[:id]).dropoff_lng]
   end
+
 
   def new
     @ride = Ride.new
