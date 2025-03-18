@@ -1,21 +1,70 @@
-<h1>Rides New</h1>
+<h1 class="text-center my-4 text-white">Request a Ride</h1>
+
 <div class="container p-4">
+  <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+    <div class="card-body">
+      <%= simple_form_for @ride do |r| %>
 
-  <%= simple_form_for @ride do |r| %>
-  <%= r.input :pickup, input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
-    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}%>
-  <%= r.input :dropoff, input_html: {data: {address_autocomplete_target: "address"}, class: "d-none"},
-    wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}%>
-  <%= r.submit %>
+        <div class="form-group mb-3"
+             data-controller="address-autocomplete"
+             data-address-autocomplete-api-key-value="<%= ENV["MAPBOX_API_KEY"] %>">
+          <%= r.label :pickup, "Pickup Location", class: "form-label fw-semibold text-dark" %>
+          <%= r.input :pickup,
+            input_html: {
+              class: "form-control form-control-lg border rounded-3 shadow-sm",
+              placeholder: "Enter pickup location...",
+              data: { address_autocomplete_target: "address" }
+            },
+            wrapper: false
+          %>
+        </div>
 
-  <% end %>
+        <div class="form-group mb-3"
+             data-controller="address-autocomplete"
+             data-address-autocomplete-api-key-value="<%= ENV["MAPBOX_API_KEY"] %>">
+          <%= r.label :dropoff, "Dropoff Location", class: "form-label fw-semibold text-dark" %>
+          <%= r.input :dropoff,
+            input_html: {
+              class: "form-control form-control-lg border rounded-3 shadow-sm",
+              placeholder: "Enter dropoff location...",
+              data: { address_autocomplete_target: "address" }
+            },
+            wrapper: false
+          %>
+        </div>
 
-  <div data-controller="map" id="map" class="map" data-map-origin-value="<%= @origin.to_json %>" data-map-destination-value="<%= @destination.to_json %>"></div>
+        <div class="text-center mt-4">
+          <%= r.submit "Request Ride", class: "btn btn-primary btn-lg px-5 py-2 fw-bold shadow" %>
+        </div>
 
+      <% end %>
+    </div>
+  </div>
 
+  <div id="map"
+       class="map mt-4 rounded shadow-lg"
+       data-controller="map"
+       data-map-origin-value="<%= @origin.to_json %>"
+       data-map-destination-value="<%= @destination.to_json %>"
+       style="width: 100%; height: 400px; border-radius: 10px;">
+  </div>
 </div>
 
+<!-- Custom Styles for Autocomplete Dropdown -->
+<style>
+  /* Dropdown container */
+  .mapboxgl-ctrl-geocoder--suggestion {
+    background-color: #212529 !important; /* Dark dropdown */
+    color: #ffffff !important; /* White text */
+  }
 
+  /* Hover effect */
+  .mapboxgl-ctrl-geocoder--suggestion:hover {
+    background-color: #343a40 !important; /* Slightly lighter dark */
+  }
 
-<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-        ({key: "<%= ENV["MAPS_KEY"]%>", v: "weekly"});</script>
+  /* Active selection */
+  .mapboxgl-ctrl-geocoder--suggestion.active {
+    background-color: #495057 !important;
+  }
+</style>
