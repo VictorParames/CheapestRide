@@ -1,4 +1,31 @@
-<h1>Show</h1>
+<!-- show.html.erb -->
+<div class="show-container">
+  <!-- Seção Origem - Destino -->
+  <header class="route-header">
+    <h1 class="route-title">Origem - Destino</h1>
+    <p class="route-path"><%= @pickup_location %> - <%= @dropoff_location %></p>
+  </header>
 
-<div data-controller="map" id="map" class="map" data-map-origin-value="<%= @origin.to_json %>" data-map-destination-value="<%= @destination.to_json %>" data-map-key-value="<%= ENV["MAPS_KEY"] %>"></div>
+  <!-- Seção Possibilidades (apenas Uber) -->
+  <section class="options-section">
+    <h2 class="options-title">Possibilidades</h2>
+    <div class="option-card">
+      <div class="option-details">
+        <div class="option-icon-title">
+          <i class="fa-solid fa-car option-icon"></i>
+          <span class="option-title">Uber</span>
+        </div>
+        <span class="option-price">R$ 40</span>
+      </div>
+    </div>
+  </section>
 
+  <!-- Mapa -->
+  <div class="map-wrapper">
+    <div data-controller="map" id="map" class="map-container"
+         data-map-origin-value="<%= @origin.to_json %>"
+         data-map-destination-value="<%= @destination.to_json %>"
+         data-map-key-value="<%= ENV["MAPS_KEY"] %>">
+    </div>
+  </div>
+</div>
