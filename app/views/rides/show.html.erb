@@ -1,6 +1,32 @@
-<h1>Show</h1>
+<!-- show.html.erb -->
+<div class="show-container">
+  <!-- Seção Origem - Destino -->
+  <div class="route-header">
+    <h1>Origem - Destino</h1>
+    <p><%= @origin %> - <%= @destination %></p>
+  </div>
 
-<div data-controller="map" id="map" class="map" data-map-origin-value="<%= @origin.to_json %>" data-map-destination-value="<%= @destination.to_json %>" data-map-key-value="<%= ENV["MAPS_KEY"] %>"></div>
+  <!-- Seção Possibilidades (apenas Uber) -->
+  <div class="options-section">
+    <h2>Possibilidades</h2>
+    <div class="option-card">
+      <div class="option-details">
+        <span class="option-title">Uber</span>
+        <span class="option-price">R$ 40</span>
+      </div>
+    </div>
+  </div>
 
-<script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-        ({key: "<%= ENV["MAPS_KEY"]%>", v: "weekly"});</script>
+  <!-- Mapa -->
+  <div data-controller="map" id="map" class="map-container"
+       data-map-origin-value="<%= @origin.to_json %>"
+       data-map-destination-value="<%= @destination.to_json %>"
+       data-map-key-value="<%= ENV["MAPS_KEY"] %>">
+  </div>
+</div>
+
+<!-- Script do Google Maps (mantido igual) -->
+<script>
+  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+  ({key: "<%= ENV["MAPS_KEY"]%>", v: "weekly"});
+</script>

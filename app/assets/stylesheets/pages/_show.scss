@@ -1,0 +1,77 @@
+// _show.scss
+
+// Container principal
+.show-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+// Seção Origem - Destino
+.route-header {
+  background-color: #ff0000; 
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-bottom: 20px;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+
+  p {
+    margin: 5px 0 0;
+    font-size: 16px;
+  }
+}
+
+// Seção Possibilidades
+.options-section {
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+}
+
+// Card de Opção (Uber)
+.option-card {
+  background-color: #ff0000;
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// Detalhes da Opção
+.option-details {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+// Título da Opção (ex.: "Uber")
+.option-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+// Preço da Opção (ex.: "R$ 80")
+.option-price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+// Mapa
+.map-container {
+  height: 400px;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 20px;
+}
