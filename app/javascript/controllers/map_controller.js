@@ -67,7 +67,6 @@ export default class extends Controller {
   }
   connect() {
 
-
     console.log(this.originValue)
     /*   let map; */
       const origin = { lat: this.originValue[0] , lng: this.originValue[1] };
