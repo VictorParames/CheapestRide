@@ -76,7 +76,8 @@ export default class extends Controller {
       const map = new Map(this.element, {
         zoom: 13,
         center: origin,
-        mapId: "DEMO_MAP_ID",
+        disableDefaultUI: true,
+        mapId: "8735f642fde9fc3c",
       });
 
 
