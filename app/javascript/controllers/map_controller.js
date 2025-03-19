@@ -67,21 +67,6 @@ export default class extends Controller {
   }
   connect() {
 
-/*
-    const polyPromise = encodedpath
-    const path = polyPromise.then((encodedPolyline) => {
-      displayRouteOnMap(encoding.decodePath(encodedPolyline))
-      console.log(encodedPolyline)
-      console.log("-------")
-      return encodedPolyline
-    })
-    console.log(encodedpath)
-    const path = new encoding.decodePath(polypath)
-    console.log(path)
-    console.log(path) */
-
-
-
 
     console.log(this.originValue)
     /*   let map; */
@@ -121,10 +106,5 @@ export default class extends Controller {
       });
       route.setMap(map);
     });
-
-/*       const route = new Polyline({
-        map: map,
-        path: `${path}`
-      }) */
   }
 }
