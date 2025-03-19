@@ -76,7 +76,7 @@ export default class extends Controller {
         zoom: 13,
         center: origin,
         disableDefaultUI: true,
-        gestureHandling: "greedy"
+        gestureHandling: "greedy",
         mapId: "8735f642fde9fc3c",
       });
 
