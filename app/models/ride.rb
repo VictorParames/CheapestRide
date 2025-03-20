@@ -52,7 +52,7 @@ class Ride < ApplicationRecord
 
     self.distance = parsed_response["routes"][0]["distanceMeters"]
     self.duration = parsed_response["routes"][0]["duration"]
-    self.polyline = parsed_response["routes"][0]["polyline"]["encodedPolyline"]
+    self.drive_polyline = parsed_response["routes"][0]["polyline"]["encodedPolyline"]
   end
 
   def get_route_transit

@@ -11,6 +11,8 @@ class RidesController < ApplicationController
     @pickup_location = extract_street_name(ride.pickup)
     @dropoff_location = extract_street_name(ride.dropoff)
     @distance = ride.distance
+    @drive_polyline = ride.drive_polyline
+    @transit_polyline = ride.transit_polyline
   end
 
   def new
