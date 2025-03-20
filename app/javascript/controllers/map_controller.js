@@ -5,7 +5,7 @@ const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 const { encoding } = await google.maps.importLibrary("geometry");
 const { Polyline } = await google.maps.importLibrary("maps")
 
-const getRouteDirections = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
+const getRouteDrive = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
   const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'; // Google Maps Routes API endpoint
 
   const body = {
@@ -56,6 +56,49 @@ const getRouteDirections = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) =
     console.error('Error fetching route directions:', error);
   });
 };
+const getRouteTraffic = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
+  const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'; // Google Maps Routes API endpoint
+
+  const body = {
+    origin: {
+      location:{
+        latLng: {
+          latitude: pickupLat,
+          longitude: pickupLng,
+        }
+      }
+    },
+    destination: {
+      location: {
+        latLng: {
+          latitude: dropoffLat,
+          longitude: dropoffLng,
+        }
+      }
+    },
+    travelMode: 'TRANSIT',
+    computeAlternativeRoutes: true,
+  };
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': `${key}`, // Replace with your actual Google Maps API key
+      'X-Goog-FieldMask': 'routes.legs.steps.transitDetails'
+    },
+    body: JSON.stringify(body),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch route data');
+    }
+    return response.json(); // Parse JSON if response is OK
+  })
+  .catch(error => {
+    console.error('Error fetching route directions:', error);
+  });
+};
 
 // Connects to data-controller="map"
 export default class extends Controller {
@@ -76,7 +119,6 @@ export default class extends Controller {
         zoom: 13,
         center: origin,
         disableDefaultUI: true,
-        streetViewControl: true,
         gestureHandling: "greedy",
         mapId: "8735f642fde9fc3c",
       });
@@ -95,12 +137,25 @@ export default class extends Controller {
       });
 
 
-    getRouteDirections(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    getRouteDrive(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
     .then(routeData => {
       console.log(encoding.decodePath(routeData.routes[0].polyline.encodedPolyline));
 
       const route = new Polyline({
         path: encoding.decodePath(routeData.routes[0].polyline.encodedPolyline),
+        geodesic: true,
+        strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      route.setMap(map);
+    });
+    getRouteTraffic(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    .then(routeData => {
+      console.log(routeData.routes);
+
+      const route = new Polyline({
+        path: routeData.routes,
         geodesic: true,
         strokeColor: "#FF0000",
         strokeOpacity: 1.0,
