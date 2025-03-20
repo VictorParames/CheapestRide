@@ -32,6 +32,9 @@ gem "pundit"
 #gem Geocoder
 gem "geocoder"
 
+# Rest Client
+gem "rest-client"
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
