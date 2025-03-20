@@ -1,10 +1,21 @@
-  <!-- Foto de usuário (opcional) -->
-  <div class="user-photo">
-    <%= image_tag "user-placeholder.jpg", class: "user-image", alt: "User Photo" %>
-  </div>
+<!-- Foto de usuário (opcional) -->
+<div class="d-flex justify-content-center mb-4">
+  <%= image_tag "user-placeholder.jpg", class: "rounded-circle shadow-lg", alt: "User Photo", width: 120 %>
+</div>
 
-  <!-- Container estilizado -->
-  <div class="styled-container">
-    <h1>Onde vamos?</h1>
-    <button class="search-button"><%= link_to "Bora", new_ride_path %></button>
+<!-- Main Container with Dark Theme -->
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 bg-dark">
+  <!-- Inner Container with White Background -->
+  <div class="text-center bg-white p-5 rounded-lg shadow-lg" style="width: 100%; max-width: 600px;">
+    <!-- Main Heading (Optimized Font Size and Spacing) -->
+    <h1 class="display-3 font-weight-bold mb-4 text-dark">Onde vamos?</h1>
+
+    <!-- Subheading or description with better spacing -->
+    <p class="lead text-dark mb-5">Encontre seu próximo destino de forma fácil, rápida e segura.</p>
+
+    <!-- Call to Action Button with Uber-inspired look -->
+    <%= link_to new_ride_path, class: "btn btn-dark btn-lg px-5 py-3 text-uppercase font-weight-bold shadow-lg rounded-pill" do %>
+      Bora
+    <% end %>
   </div>
+</div>
