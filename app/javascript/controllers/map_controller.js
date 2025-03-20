@@ -56,7 +56,7 @@ const getRouteDrive = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
     console.error('Error fetching route directions:', error);
   });
 };
-const getRouteTraffic = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
+const getRouteTransit = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
   const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'; // Google Maps Routes API endpoint
 
   const body = {
@@ -85,7 +85,7 @@ const getRouteTraffic = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
     headers: {
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': `${key}`, // Replace with your actual Google Maps API key
-      'X-Goog-FieldMask': 'routes.legs.steps.transitDetails'
+      'X-Goog-FieldMask': 'routes.polyline'
     },
     body: JSON.stringify(body),
   })
@@ -150,14 +150,14 @@ export default class extends Controller {
       });
       route.setMap(map);
     });
-    getRouteTraffic(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    getRouteTransit(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
     .then(routeData => {
-      console.log(routeData.routes);
+      console.log(routeData.routes[0].polyline.encodedPolyline);
 
       const route = new Polyline({
-        path: routeData.routes,
+        path: encoding.decodePath(routeData.routes[0].polyline.encodedPolyline),
         geodesic: true,
-        strokeColor: "#FF0000",
+        strokeColor: "#0000FF",
         strokeOpacity: 1.0,
         strokeWeight: 2
       });
