@@ -10,6 +10,7 @@ class RidesController < ApplicationController
     @destination = [ride.dropoff_lat, ride.dropoff_lng]
     @pickup_location = extract_street_name(ride.pickup)
     @dropoff_location = extract_street_name(ride.dropoff)
+    @distance = ride.distance
   end
 
   def new
