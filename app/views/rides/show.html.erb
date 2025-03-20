@@ -24,6 +24,8 @@
     <div data-controller="map" id="map" class="map-container"
          data-map-origin-value="<%= @origin.to_json %>"
          data-map-destination-value="<%= @destination.to_json %>"
+         data-map-drive-value="<%= @drive_polyline %>"
+         data-map-transit-value="<%= @transit_polyline %>"
          data-map-key-value="<%= ENV["MAPS_KEY"] %>">
     </div>
   </div>

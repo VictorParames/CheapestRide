@@ -23,17 +23,12 @@
               %>
             </div>
 
-            <!-- Dropoff Field -->
-            <div class="form-group mb-4">
-              <%= r.label :dropoff, "Dropoff Location", class: "form-label" %>
-              <%= r.input :dropoff,
-                input_html: {
-                  data: { address_autocomplete_target: "address" },
-                  class: "form-control d-none"
-                },
-                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
-              %>
-            </div>
+        <div class="form-group mb-3">
+          <%= r.input :dropoff,
+            input_html: {data: {address_autocomplete_target: "address"}, class: "d-none" },
+            wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
+            %>
+        </div>
 
             <!-- Submit Button -->
             <div class="text-center mt-4">
