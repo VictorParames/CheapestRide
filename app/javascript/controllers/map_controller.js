@@ -106,7 +106,7 @@ export default class extends Controller {
   static values = {
     origin: Array,
     destination: Array,
-    key: String
+    key: String,
   }
   connect() {
 
@@ -139,7 +139,7 @@ export default class extends Controller {
 
     getRouteDrive(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
     .then(routeData => {
-      console.log(encoding.decodePath(routeData.routes[0].polyline.encodedPolyline));
+      console.log(routeData.routes);
 
       const route = new Polyline({
         path: encoding.decodePath(routeData.routes[0].polyline.encodedPolyline),
