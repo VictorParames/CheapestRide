@@ -5,7 +5,7 @@ const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 const { encoding } = await google.maps.importLibrary("geometry");
 const { Polyline } = await google.maps.importLibrary("maps")
 
-const getRouteDirections = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
+const getRouteDrive = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
   const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'; // Google Maps Routes API endpoint
 
   const body = {
@@ -43,6 +43,49 @@ const getRouteDirections = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) =
       'Content-Type': 'application/json',
       'X-Goog-Api-Key': `${key}`, // Replace with your actual Google Maps API key
       'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters,routes.polyline.encodedPolyline'
+    },
+    body: JSON.stringify(body),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch route data');
+    }
+    return response.json(); // Parse JSON if response is OK
+  })
+  .catch(error => {
+    console.error('Error fetching route directions:', error);
+  });
+};
+const getRouteTransit = (pickupLat, pickupLng, dropoffLat, dropoffLng, key) => {
+  const url = 'https://routes.googleapis.com/directions/v2:computeRoutes'; // Google Maps Routes API endpoint
+
+  const body = {
+    origin: {
+      location:{
+        latLng: {
+          latitude: pickupLat,
+          longitude: pickupLng,
+        }
+      }
+    },
+    destination: {
+      location: {
+        latLng: {
+          latitude: dropoffLat,
+          longitude: dropoffLng,
+        }
+      }
+    },
+    travelMode: 'TRANSIT',
+    computeAlternativeRoutes: true,
+  };
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Goog-Api-Key': `${key}`, // Replace with your actual Google Maps API key
+      'X-Goog-FieldMask': 'routes.polyline'
     },
     body: JSON.stringify(body),
   })
@@ -94,7 +137,7 @@ export default class extends Controller {
       });
 
 
-    getRouteDirections(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    getRouteDrive(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
     .then(routeData => {
       console.log(encoding.decodePath(routeData.routes[0].polyline.encodedPolyline));
 
@@ -102,6 +145,19 @@ export default class extends Controller {
         path: encoding.decodePath(routeData.routes[0].polyline.encodedPolyline),
         geodesic: true,
         strokeColor: "#FF0000",
+        strokeOpacity: 1.0,
+        strokeWeight: 2
+      });
+      route.setMap(map);
+    });
+    getRouteTransit(this.originValue[0], this.originValue[1], this.destinationValue[0], this.destinationValue[1], this.keyValue)
+    .then(routeData => {
+      console.log(routeData.routes[0].polyline.encodedPolyline);
+
+      const route = new Polyline({
+        path: encoding.decodePath(routeData.routes[0].polyline.encodedPolyline),
+        geodesic: true,
+        strokeColor: "#0000FF",
         strokeOpacity: 1.0,
         strokeWeight: 2
       });
