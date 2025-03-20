@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_20_175333) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_20_194325) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -38,6 +38,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_20_175333) do
     t.string "duration"
     t.string "drive_polyline"
     t.string "transit_polyline"
+    t.float "transit_distance"
+    t.float "transit_duration"
+    t.float "nearest_metro_station_lat"
+    t.float "nearest_metro_station_lng"
     t.index ["user_id"], name: "index_rides_on_user_id"
   end
 
