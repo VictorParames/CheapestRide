@@ -1,48 +1,64 @@
-<h1 class="text-center my-4 text-white">Request a Ride</h1>
+<h1 class="text-center text-primary fw-bold display-3 mb-4 mt-4">Onde Vamos</h1>
 
-<div class="container p-4">
-  <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
-    <div class="card-body">
-      <%= simple_form_for @ride do |r| %>
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+      <div class="card shadow border-0 rounded-4 p-4 bg-light">
+        <div class="card-body">
+          <%= simple_form_for @ride do |r| %>
 
-        <div class="form-group mb-3">
-          <%= r.input :pickup,
-            input_html: {data: {address_autocomplete_target: "address"}, class: "d-none" },
-            wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
-            %>
+            <!-- Pickup Field -->
+            <div class="form-group mb-4">
+              <%= r.label :pickup, "Local de Partida", class:"form-label fw-semibold text-dark text-uppercase" %>
+              <%= r.input :pickup,
+                input_html: {
+                  data: { address_autocomplete_target: "address" },
+                  class: "form-control d-none"
+                },
+                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
+              %>
+            </div>
+
+            <!-- Dropoff Field -->
+            <div class="form-group mb-4">
+              <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
+              <%= r.input :dropoff,
+                input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none" },
+                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
+              %>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-4">
+            <%= r.submit "Bora", class: "btn btn-primary btn-lg px-5 shadow rounded-pill fw-bold text-uppercase w-100", style: "height: 45px;" %>
+
+            </div>
+
+          <% end %>
         </div>
-
-        <div class="form-group mb-3">
-          <%= r.input :dropoff,
-            input_html: {data: {address_autocomplete_target: "address"}, class: "d-none" },
-            wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}, class: ""}
-            %>
-        </div>
-
-
-        <div class="text-center mt-4">
-          <%= r.submit "Request Ride", class: "btn btn-primary btn-lg px-5 py-2 fw-bold shadow" %>
-        </div>
-
-      <% end %>
+      </div>
     </div>
   </div>
+</div>
 
-<!-- Custom Styles for Autocomplete Dropdown -->
-<style>
-  /* Dropdown container */
-  .mapboxgl-ctrl-geocoder--suggestion {
-    background-color: #212529 !important; /* Dark dropdown */
-    color: #ffffff !important; /* White text */
-  }
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container text-center">
+    <!-- Social Links -->
+    <div class="mb-3">
+      <a href="https://www.facebook.com" class="text-white mx-2" target="_blank" title="Facebook">
+        <i class="fab fa-facebook fa-xl"></i>
+      </a>
+      <a href="https://www.twitter.com" class="text-white mx-2" target="_blank" title="Twitter">
+        <i class="fab fa-twitter fa-xl"></i>
+      </a>
+      <a href="https://www.linkedin.com" class="text-white mx-2" target="_blank" title="LinkedIn">
+        <i class="fab fa-linkedin fa-xl"></i>
+      </a>
+      <a href="https://www.instagram.com" class="text-white mx-2" target="_blank" title="Instagram">
+        <i class="fab fa-instagram fa-xl"></i>
+      </a>
+    </div>
 
-  /* Hover effect */
-  .mapboxgl-ctrl-geocoder--suggestion:hover {
-    background-color: #343a40 !important; /* Slightly lighter dark */
-  }
-
-  /* Active selection */
-  .mapboxgl-ctrl-geocoder--suggestion.active {
-    background-color: #495057 !important;
-  }
-</style>
+    <p class="mb-0 small">© 2025 Bora. Todos os direitos reservados.</p>
+  </div>
+</footer>
