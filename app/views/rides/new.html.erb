@@ -1,19 +1,15 @@
+<h1 class="text-center text-primary fw-bold display-3 mb-4 mt-4">Onde Vamos</h1>
 
-
-
-
-<h1 class="text-center text-dark font-weight-bold display-3 mb-5 mt-4">Request a Ride</h1>
-
-<div class="container p-4 bg-dark">
+<div class="container py-5">
   <div class="row justify-content-center">
-    <div class="col-lg-8 col-md-10 col-sm-12">
-      <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+      <div class="card shadow border-0 rounded-4 p-4 bg-light">
         <div class="card-body">
           <%= simple_form_for @ride do |r| %>
 
             <!-- Pickup Field -->
             <div class="form-group mb-4">
-              <%= r.label :pickup, "Pickup Location", class: "form-label" %>
+              <%= r.label :pickup, "Local de Partida", class:"form-label fw-semibold text-dark text-uppercase" %>
               <%= r.input :pickup,
                 input_html: {
                   data: { address_autocomplete_target: "address" },
@@ -23,16 +19,19 @@
               %>
             </div>
 
-        <div class="form-group mb-3">
-          <%= r.input :dropoff,
-            input_html: {data: {address_autocomplete_target: "address"}, class: "d-none" },
-            wrapper_html: {data: {controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"]}}
-            %>
-        </div>
+            <!-- Dropoff Field -->
+            <div class="form-group mb-4">
+              <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
+              <%= r.input :dropoff,
+                input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none" },
+                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
+              %>
+            </div>
 
             <!-- Submit Button -->
             <div class="text-center mt-4">
-              <%= r.submit "Request Ride", class: "btn btn-primary btn-lg px-5 py-3 shadow-lg rounded-pill fw-bold" %>
+            <%= r.submit "Bora", class: "btn btn-primary btn-lg px-5 shadow rounded-pill fw-bold text-uppercase w-100", style: "height: 45px;" %>
+
             </div>
 
           <% end %>
@@ -42,25 +41,24 @@
   </div>
 </div>
 
-<footer class="bg-dark text-white py-3 mt-5">
+<footer class="bg-dark text-white py-4 mt-5">
   <div class="container text-center">
     <!-- Social Links -->
-    <div>
+    <div class="mb-3">
       <a href="https://www.facebook.com" class="text-white mx-2" target="_blank" title="Facebook">
-        <i class="fab fa-facebook fa-2x"></i>
+        <i class="fab fa-facebook fa-xl"></i>
       </a>
       <a href="https://www.twitter.com" class="text-white mx-2" target="_blank" title="Twitter">
-        <i class="fab fa-twitter fa-2x"></i>
+        <i class="fab fa-twitter fa-xl"></i>
       </a>
       <a href="https://www.linkedin.com" class="text-white mx-2" target="_blank" title="LinkedIn">
-        <i class="fab fa-linkedin fa-2x"></i>
+        <i class="fab fa-linkedin fa-xl"></i>
       </a>
       <a href="https://www.instagram.com" class="text-white mx-2" target="_blank" title="Instagram">
-        <i class="fab fa-instagram fa-2x"></i>
+        <i class="fab fa-instagram fa-xl"></i>
       </a>
     </div>
 
-    <!-- Optional Footer Text (e.g., copyright) -->
-    <p class="mt-2 mb-0">© 2025 Bora. All rights reserved.</p>
+    <p class="mb-0 small">© 2025 Bora. Todos os direitos reservados.</p>
   </div>
 </footer>
