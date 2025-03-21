@@ -1,78 +1,25 @@
-<!-- app/views/rides/show.html.erb -->
+<!-- show.html.erb -->
 <div class="show-container">
   <!-- Seção Origem - Destino -->
   <header class="route-header">
     <h1 class="route-title"><%= @pickup_location %> - <%= @dropoff_location %></h1>
-    <p>Distância total: <%= @distance %> km, Duração total: <%= @duration %> minutos</p>
   </header>
 
-  <!-- Seção Possibilidades -->
+  <!-- Seção Possibilidades (apenas Uber) -->
   <section class="options-section">
     <h2 class="options-title">Possibilidades</h2>
-
-    <!-- Card Uber -->
-    <% if @uber_price && @uber_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">Uber</span>
-          </div>
-          <span class="option-price">R$ <%= number_to_currency(@uber_price, unit: "", separator: ",", delimiter: "") %></span>
+    <div class="option-card">
+      <div class="option-details">
+        <div class="option-icon-title">
+          <i class="fa-solid fa-car option-icon"></i>
+          <span class="option-title">Uber</span>
         </div>
+        <span class="option-price">R$ 40</span>
       </div>
-    <% else %>
-      <p>Preço do Uber não disponível no momento.</p>
-    <% end %>
-
-    <!-- Card 99 -->
-    <% if @ninetynine_price && @ninetynine_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">99</span>
-          </div>
-          <span class="option-price">R$ <%= number_to_currency(@ninetynine_price, unit: "", separator: ",", delimiter: "") %></span>
-        </div>
-      </div>
-    <% else %>
-      <p>Preço do 99 não disponível no momento.</p>
-    <% end %>
-
-    <!-- Card InDrive -->
-    <% if @indrive_price && @indrive_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">InDrive</span>
-          </div>
-          <span class="option-price">R$ <%= number_to_currency(@indrive_price, unit: "", separator: ",", delimiter: "") %></span>
-        </div>
-      </div>
-    <% else %>
-      <p>Preço do InDrive não disponível no momento.</p>
-    <% end %>
-
-    <!-- Card Metrô -->
-    <% if @metro_price && @metro_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-train-subway option-icon"></i>
-            <span class="option-title">Metrô</span>
-          </div>
-          <span class="option-price">R$ <%= number_to_currency(@metro_price, unit: "", separator: ",", delimiter: "") %></span>
-        </div>
-      </div>
-    <% else %>
-      <p>Preço do Metrô não disponível no momento.</p>
-    <% end %>
+    </div>
   </section>
 
   <!-- Mapa -->
-  <div class="map-wrapper">
     <div data-controller="map" id="map" class="map-container"
          data-map-origin-value="<%= @origin.to_json %>"
          data-map-destination-value="<%= @destination.to_json %>"
@@ -82,9 +29,3 @@
     </div>
   </div>
 </div>
-
-<!-- Script do Google Maps -->
-<script>
-  (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
-  ({key: "<%= ENV["MAPS_KEY"]%>", v: "weekly"});
-</script>
