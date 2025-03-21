@@ -13,7 +13,8 @@
               <%= r.input :pickup,
                 input_html: {
                   data: { address_autocomplete_target: "address" },
-                  class: "form-control d-none"
+                  class: "form-control d-none",
+                  value: ""
                 },
                 wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
               %>
@@ -23,7 +24,7 @@
             <div class="form-group mb-4">
               <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
               <%= r.input :dropoff,
-                input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none" },
+                input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none", value: "" },
                 wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
               %>
             </div>
