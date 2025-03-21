@@ -54,19 +54,19 @@ class Ride < ApplicationRecord
       if parsed_response["routes"]&.any?
         distance_meters = parsed_response["routes"][0]["distanceMeters"].to_f
         self.distance = (distance_meters / 1000.0).round(2) # Converter metros para km
-        self.duration = (parsed_response["routes"][0]["duration"].delete("s").to_f / 60).round(2) # Converter segundos para minutos
+        self.duration = (parsed_response["routes"][0]["duration"].delete("s").to_f / 60).round # Alterado para arredondar para número inteiro
         self.drive_polyline = parsed_response["routes"][0]["polyline"]["encodedPolyline"]
         Rails.logger.info("Driving route - Distance: #{self.distance} km (#{distance_meters} meters), Duration: #{self.duration} minutes")
       else
         Rails.logger.warn("No driving route found: #{parsed_response}")
         self.distance = 0.0
-        self.duration = 0.0
+        self.duration = 0 # Alterado para número inteiro
         self.drive_polyline = ""
       end
     rescue RestClient::ExceptionWithResponse => e
       Rails.logger.error("Failed to get driving route: #{e.message}")
       self.distance = 0.0
-      self.duration = 0.0
+      self.duration = 0 # Alterado para número inteiro
       self.drive_polyline = ""
     end
   end
@@ -108,7 +108,7 @@ class Ride < ApplicationRecord
         self.transit_polyline = route.dig("polyline", "encodedPolyline") || ""
         distance_meters = route["distanceMeters"].to_f
         self.transit_distance = (distance_meters / 1000.0).round(2) # Converter para km
-        self.transit_duration = (route["duration"]&.delete("s")&.to_f || 0) / 60 # Converter para minutos
+        self.transit_duration = ((route["duration"]&.delete("s")&.to_f || 0) / 60).round # Alterado para arredondar para número inteiro
 
         steps = route.dig("legs", 0, "steps") || []
         metro_step = steps.find do |step|
@@ -129,7 +129,7 @@ class Ride < ApplicationRecord
         Rails.logger.warn("No transit routes found for pickup: #{pickup}, dropoff: #{dropoff}")
         self.transit_polyline = ""
         self.transit_distance = 0
-        self.transit_duration = 0
+        self.transit_duration = 0 # Já é número inteiro
         # Fallback: Usar uma estação de metrô próxima
         set_nearest_metro_station_fallback
       end
@@ -137,7 +137,7 @@ class Ride < ApplicationRecord
       Rails.logger.error("Failed to get transit route: #{e.message}")
       self.transit_polyline = ""
       self.transit_distance = 0
-      self.transit_duration = 0
+      self.transit_duration = 0 # Já é número inteiro
       # Fallback: Usar uma estação de metrô próxima
       set_nearest_metro_station_fallback
     end
