@@ -1,64 +1,9 @@
+# app/models/ride.rb
 require "rest-client"
 
 class Ride < ApplicationRecord
   belongs_to :user
   after_validation :set_coordinates
-
-  def calculate_route_to_station
-    return { distance: 0, duration: 0 } unless nearest_metro_station_lat && nearest_metro_station_lng
-
-    url = "https://routes.googleapis.com/directions/v2:computeRoutes"
-    body = {
-      origin: {
-        location: {
-          latLng: {
-            latitude: pickup_lat,
-            longitude: pickup_lng
-          }
-        }
-      },
-      destination: {
-        location: {
-          latLng: {
-            latitude: nearest_metro_station_lat,
-            longitude: nearest_metro_station_lng
-          }
-        }
-      },
-      travelMode: 'DRIVE',
-      routingPreference: "TRAFFIC_AWARE",
-      computeAlternativeRoutes: false,
-      routeModifiers: {
-        avoidTolls: false,
-        avoidHighways: false,
-        avoidFerries: false
-      },
-      languageCode: "en-US",
-      units: "METRIC"
-    }
-    headers = {
-      'Content-Type': 'application/json',
-      'X-Goog-Api-Key': ENV.fetch("MAPS_KEY"),
-      'X-Goog-FieldMask': 'routes.duration,routes.distanceMeters'
-    }
-    begin
-      response = RestClient.post(url, body.to_json, headers)
-      parsed_response = JSON.parse(response)
-      if parsed_response["routes"]&.any?
-        distance_meters = parsed_response["routes"][0]["distanceMeters"].to_f
-        {
-          distance: (distance_meters / 1000.0).round(2), # Converter para km
-          duration: (parsed_response["routes"][0]["duration"].delete("s").to_f / 60).round(2) # Converter para minutos
-        }
-      else
-        Rails.logger.warn("No route found to metro station: #{parsed_response}")
-        { distance: 0, duration: 0 }
-      end
-    rescue RestClient::ExceptionWithResponse => e
-      Rails.logger.error("Failed to calculate route to station: #{e.message}")
-      { distance: 0, duration: 0 }
-    end
-  end
 
   private
 

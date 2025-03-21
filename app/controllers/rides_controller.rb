@@ -18,22 +18,12 @@ class RidesController < ApplicationController
     price_service = RidePriceService.new(@distance, @duration)
 
     # Preço fixo do metrô
-    metro_price = 5.20
+    @metro_price = 5.20
 
     # Preços para a viagem completa
     @uber_price = price_service.fetch_full_ride_price("Uber")
     @ninetynine_price = price_service.fetch_full_ride_price("99")
-    
-    # Calcular distância e duração até a estação
-    route_to_station = ride.calculate_route_to_station || { distance: 0, duration: 0 } # Fallback caso não haja estação
-    station_distance = route_to_station[:distance] # Distância até a estação (em km)
-    station_duration = route_to_station[:duration] # Duração até a estação (em minutos)
-
-    # Preço do Uber até a estação de metrô
-    uber_to_station_price = price_service.fetch_uber_to_station_price(station_distance, station_duration)
-
-    # Preço total do Uber + Metrô
-    @uber_metro_price = (uber_to_station_price + metro_price).round(2)
+    @indrive_price = price_service.fetch_full_ride_price("InDrive")
   end
 
   def new
