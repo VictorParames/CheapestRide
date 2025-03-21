@@ -1,13 +1,14 @@
+<!-- app/views/rides/show.html.erb -->
 <div class="show-container">
   <!-- Seção Origem - Destino -->
   <header class="route-header">
-    <h1 class="route-title"><%= @pickup_location %> - <%= @dropoff_location %></h1>
-    <p>Distância total: <%= @distance %> km, Duração total: <%= @duration %> minutos</p>
+    <h1 class="route-title" style="color: #333;"><%= @pickup_location %> - <%= @dropoff_location %></h1>
+    <p style="color: #333;">Distância total: <%= @distance %> km, Duração total: <%= @duration %> minutos</p>
   </header>
 
   <!-- Seção Possibilidades -->
   <section class="options-section">
-    <h2 class="options-title">Possibilidades</h2>
+    <h2 class="options-title" style="color: #333;">Possibilidades</h2>
 
     <!-- Card Uber -->
     <% if @uber_price && @uber_price > 0 %>
@@ -15,9 +16,9 @@
         <div class="option-details">
           <div class="option-icon-title">
             <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">Uber</span>
+            <span class="option-title" style="color: yellow;">Uber</span>
           </div>
-          <span class="option-price">R$ <%= number_to_currency(@uber_price, unit: "", separator: ",", delimiter: "") %></span>
+          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@uber_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
       </div>
     <% else %>
@@ -30,9 +31,9 @@
         <div class="option-details">
           <div class="option-icon-title">
             <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">99</span>
+            <span class="option-title" style="color: yellow;">99</span>
           </div>
-          <span class="option-price">R$ <%= number_to_currency(@ninetynine_price, unit: "", separator: ",", delimiter: "") %></span>
+          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@ninetynine_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
       </div>
     <% else %>
@@ -45,9 +46,9 @@
         <div class="option-details">
           <div class="option-icon-title">
             <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title">InDrive</span>
+            <span class="option-title" style="color: yellow;">InDrive</span>
           </div>
-          <span class="option-price">R$ <%= number_to_currency(@indrive_price, unit: "", separator: ",", delimiter: "") %></span>
+          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@indrive_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
       </div>
     <% else %>
@@ -60,9 +61,9 @@
         <div class="option-details">
           <div class="option-icon-title">
             <i class="fa-solid fa-train-subway option-icon"></i>
-            <span class="option-title">Metrô</span>
+            <span class="option-title" style="color: yellow;">Metrô</span>
           </div>
-          <span class="option-price">R$ <%= number_to_currency(@metro_price, unit: "", separator: ",", delimiter: "") %></span>
+          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@metro_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
       </div>
     <% else %>
