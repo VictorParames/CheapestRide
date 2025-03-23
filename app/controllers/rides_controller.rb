@@ -20,13 +20,19 @@ class RidesController < ApplicationController
   end
 
   def create
-    @ride = Ride.new(ride_params)
-    @ride.user = current_user
-    if @ride.save
-      redirect_to @ride, notice: "Ride was successfully created."
-    else
-      render :new, status: :unprocessable_entity
+    pickup = params[:ride][:pickup].presence
+    dropoff = params[:ride][:dropoff].presence
+
+    unless pickup.nil? || dropoff.nil?
+      @ride = Ride.new(ride_params)
+      @ride.user = current_user
+      if @ride.save!
+        redirect_to @ride, notice: "Ride was successfully created."
+      else
+        render :new, status: :unprocessable_entity
+      end
     end
+
   end
 
   private
