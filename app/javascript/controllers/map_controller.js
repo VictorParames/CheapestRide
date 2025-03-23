@@ -50,14 +50,14 @@ export default class extends Controller {
       geodesic: true,
       strokeColor: "#9600ED",
       strokeOpacity: 1.0,
-      strokeWeight: 3
+      strokeWeight: 7
       });
       drive_route.setMap(map);
 
       const transit_route = new Polyline({
         path: encoding.decodePath(transitPolyline),
         geodesic: true,
-        strokeColor: "#9600ED",
+        strokeColor: "#FF0000",
         strokeOpacity: 1.0,
         strokeWeight: 3
       });

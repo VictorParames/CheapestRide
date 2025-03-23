@@ -1,64 +1,46 @@
-<h1 class="text-center text-primary fw-bold display-3 mb-4 mt-4">Onde Vamos</h1>
 
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-12">
-      <div class="card shadow border-0 rounded-4 p-4 bg-light">
-        <div class="card-body">
-          <%= simple_form_for @ride do |r| %>
+<div id=map data-controller="mapforshow" class="whole-map">
+</div>
+<div class="fixed-bottom">
+  <div class="d-flex justify-content-center">
+    <button class="octagonal-btn-sm btn btn-info m-1" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="true"></button>
+  </div>
+  <div class="collapse show" id="collapseExample">
+    <div class="polygon bg-primary p-0 pt-1">
+      <div class="polygon bg-success mx-1 mt-1 p-5">
+        <%= simple_form_for @ride do |r| %>
 
-            <!-- Pickup Field -->
-            <div class="form-group mb-4">
-              <%= r.label :pickup, "Local de Partida", class:"form-label fw-semibold text-dark text-uppercase" %>
-              <%= r.input :pickup,
-                input_html: {
-                  data: { address_autocomplete_target: "address" },
-                  class: "form-control d-none"
-                },
-                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
-              %>
-            </div>
+          <!-- Pickup Field -->
+          <div class="form-group mb-4">
+            <%= r.label :pickup, "Local de Partida", class:"form-label fw-semibold text-dark text-uppercase" %>
+            <%= r.input :pickup,
+              input_html: {
+                data: { address_autocomplete_target: "address" },
+                class: "form-control d-none",
+                value: ""
+              },
+              wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] }, class: "" }
+            %>
+          </div>
 
-            <!-- Dropoff Field -->
-            <div class="form-group mb-4">
-              <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
-              <%= r.input :dropoff,
-                input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none" },
-                wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] } }
-              %>
-            </div>
+          <!-- Dropoff Field -->
+          <div class="form-group mb-4">
+            <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
+            <%= r.input :dropoff,
+              input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none", value: "" },
+              wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] }, class: "" }
+            %>
+          </div>
 
-            <!-- Submit Button -->
+          <!-- Submit Button -->
+          <div class="">
             <div class="text-center mt-4">
-            <%= r.submit "Bora", class: "btn btn-primary btn-lg px-5 shadow rounded-pill fw-bold text-uppercase w-100", style: "height: 45px;" %>
-
+            <%= r.submit "Bora!", class: "octagonal-btn btn btn-primary px-5 shadow fw-bold text-uppercase" %>
             </div>
+          </div>
 
-          <% end %>
-        </div>
+        <% end %>
       </div>
     </div>
   </div>
 </div>
-
-<footer class="bg-dark text-white py-4 mt-5">
-  <div class="container text-center">
-    <!-- Social Links -->
-    <div class="mb-3">
-      <a href="https://www.facebook.com" class="text-white mx-2" target="_blank" title="Facebook">
-        <i class="fab fa-facebook fa-xl"></i>
-      </a>
-      <a href="https://www.twitter.com" class="text-white mx-2" target="_blank" title="Twitter">
-        <i class="fab fa-twitter fa-xl"></i>
-      </a>
-      <a href="https://www.linkedin.com" class="text-white mx-2" target="_blank" title="LinkedIn">
-        <i class="fab fa-linkedin fa-xl"></i>
-      </a>
-      <a href="https://www.instagram.com" class="text-white mx-2" target="_blank" title="Instagram">
-        <i class="fab fa-instagram fa-xl"></i>
-      </a>
-    </div>
-
-    <p class="mb-0 small">© 2025 Bora. Todos os direitos reservados.</p>
-  </div>
-</footer>
