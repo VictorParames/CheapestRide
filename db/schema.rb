@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_21_000016) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_21_185256) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,10 +25,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_21_000016) do
   end
 
   create_table "rides", force: :cascade do |t|
-    t.text "dropoff"
+    t.text "dropoff", null: false
     t.float "dropoff_lat"
     t.float "dropoff_lng"
-    t.text "pickup"
+    t.text "pickup", null: false
     t.float "pickup_lat"
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
