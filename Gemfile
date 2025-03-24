@@ -34,6 +34,9 @@ gem "geocoder"
 
 gem "ruby-openai"
 
+
+gem "solid_queue"
+
 gem 'rest-client'
 
 # Use Redis adapter to run Action Cable in production

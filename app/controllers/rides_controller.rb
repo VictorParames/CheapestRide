@@ -1,29 +1,36 @@
 # app/controllers/rides_controller.rb
 class RidesController < ApplicationController
+  before_action :authenticate_user!, only: [:create] # Garante que o usuário está autenticado
+  before_action :set_ride, only: [:show]
+
   def index
     @ride = Ride.new
   end
 
   def show
-    ride = Ride.find(params[:id])
-    @origin = [ride.pickup_lat, ride.pickup_lng]
-    @destination = [ride.dropoff_lat, ride.dropoff_lng]
-    @pickup_location = extract_street_name(ride.pickup)
-    @dropoff_location = extract_street_name(ride.dropoff)
-    @distance = ride.distance
-    @duration = ride.duration
-    @drive_polyline = ride.drive_polyline
-    @transit_polyline = ride.transit_polyline
+    @pickup_location = extract_street_name(@ride.pickup)
+    @dropoff_location = extract_street_name(@ride.dropoff)
+    @distance = @ride.distance
+    @duration = @ride.duration
+    @drive_polyline = @ride.drive_polyline
+    @transit_polyline = @ride.transit_polyline
+    @origin = [@ride.pickup_lat, @ride.pickup_lng]
+    @destination = [@ride.dropoff_lat, @ride.dropoff_lng]
 
-    price_service = RidePriceService.new(@distance, @duration)
+    # Calcular preços apenas se distance e duration estiverem disponíveis
+    if @distance && @duration
+      price_service = RidePriceService.new(@distance, @duration)
+      @uber_price = price_service.fetch_full_ride_price("Uber")
+      @ninetynine_price = price_service.fetch_full_ride_price("99")
+      @indrive_price = price_service.fetch_full_ride_price("InDrive")
+    else
+      @uber_price = nil
+      @ninetynine_price = nil
+      @indrive_price = nil
+    end
 
     # Preço fixo do metrô
-    @metro_price = 5.20
-
-    # Preços para a viagem completa
-    @uber_price = price_service.fetch_full_ride_price("Uber")
-    @ninetynine_price = price_service.fetch_full_ride_price("99")
-    @indrive_price = price_service.fetch_full_ride_price("InDrive")
+    @metro_price = @ride.transit_distance && @ride.transit_distance > 0 ? 5.20 : nil
   end
 
   def new
@@ -34,19 +41,31 @@ class RidesController < ApplicationController
     pickup = params[:ride][:pickup].presence
     dropoff = params[:ride][:dropoff].presence
 
-    unless pickup.nil? || dropoff.nil?
+    if pickup.nil? || dropoff.nil?
       @ride = Ride.new(ride_params)
-      @ride.user = current_user
-      if @ride.save!
-        redirect_to @ride, notice: "Ride was successfully created."
-      else
-        render :new, status: :unprocessable_entity
-      end
+      flash.now[:alert] = "Por favor, preencha os campos de origem e destino."
+      render :new, status: :unprocessable_entity
+      return
     end
 
+    @ride = Ride.new(ride_params)
+    @ride.user = current_user
+    if @ride.save
+      redirect_to @ride, notice: "Ride was successfully created."
+    else
+      flash.now[:alert] = @ride.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private
+
+  def set_ride
+    @ride = Ride.find_by(id: params[:id])
+    unless @ride
+      redirect_to rides_path, alert: "Corrida não encontrada."
+    end
+  end
 
   def ride_params
     params.require(:ride).permit(:pickup, :dropoff)

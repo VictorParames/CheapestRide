@@ -8,6 +8,7 @@ Bundler.require(*Rails.groups)
 
 module CheapestRide
   class Application < Rails::Application
+    config.active_job.queue_adapter = :solid_queue
     config.action_controller.raise_on_missing_callback_actions = false if Rails.version >= "7.1.0"
     config.generators do |generate|
       generate.assets false
