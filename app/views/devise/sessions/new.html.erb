@@ -2,24 +2,27 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-6 col-lg-4">
-        <div class="glass-card text-white p-4 p-md-5 rounded-4 shadow-lg">
-          <h2 class="text-center fw-bold mb-3">Bora?</h2>
+        <div class="text-center bg-white p-5 rounded-4 shadow-lg position-relative d-flex flex-column align-items-center">
+          <h2 class="text-center text-primary mb-3">Bora?</h2>
           <p class="text-center text-secondary mb-4">Sign in to continue</p>
           <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
             <div class="mb-3">
               <%= f.input :email, required: false, autofocus: true, placeholder: "Email",
-                input_html: { class: "form-control input-style py-2 rounded-3" } %>
+                label_html: { class: "text-black" },
+                input_html: { class: "form-control input-style py-2 rounded-3 text-black" } %>
             </div>
             <div class="mb-3">
               <%= f.input :password, required: false, placeholder: "••••••",
-                input_html: { class: "form-control input-style py-2 rounded-3" } %>
+                label_html: { class: "text-black" },
+                input_html: { class: "form-control input-style py-2 rounded-3 text-black" } %>
             </div>
             <div class="form-check mb-3">
               <%= f.input :remember_me, as: :boolean, label: "Remember me",
+                label_html: { class: "text-black" },
                 input_html: { class: "form-check-input" } if devise_mapping.rememberable? %>
             </div>
             <div class="d-grid">
-              <%= f.button :submit, "Log in", class: "btn btn-light fw-bold py-2 rounded-3 shadow-sm btn-hover" %>
+              <%= f.button :submit, "Log in", class: "btn btn-primary fw-bold py-2 rounded-3 shadow-sm btn-hover" %>
             </div>
             <div class="text-center mt-3">
               <%= render "devise/shared/links" %>
@@ -30,39 +33,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  /* Glassmorphism effect for a modern feel */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-  }
-
-  /* Input Field Styling */
-  .input-style {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border: none;
-    color: #fff !important;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .input-style::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .input-style:focus {
-    background: rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Button Hover Effect */
-  .btn-hover:hover {
-    background-color: #ddd !important;
-    color: #000 !important;
-    transform: translateY(-2px);
-    transition: all 0.4s ease-in-out;
-  }
-</style>
