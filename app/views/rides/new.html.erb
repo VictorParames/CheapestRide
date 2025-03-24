@@ -1,7 +1,11 @@
 
 <div class="fixed-top p-3">
   <div class="d-flex justify-content-end">
-    <div class="octagonal-profile btn btn-primary"><%= link_to "Profile", edit_user_registration_path %></div>
+    <div class="">
+      <%= link_to edit_user_registration_path do %>
+        <%= image_tag "#{current_user.avatar}.png", size: "56x56" %>
+      <% end %>
+    </div>
   </div>
 </div>
 
