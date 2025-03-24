@@ -3,8 +3,14 @@ class DestinationsController < ApplicationController
     @destinations = Destination.all
   end
 
-  def test
+  def show
   @destination = Destination.find(params[:id])
+
+end
+
+def create
+
+@destination = Destination.new(destination_params)
 
 end
 

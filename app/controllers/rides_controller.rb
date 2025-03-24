@@ -34,7 +34,11 @@ class RidesController < ApplicationController
     end
 
   end
-
+def destination
+    @ride = Ride.find(params[:id])
+    @destination = [@ride.dropoff_lat, @ride.dropoff_lng]
+    @dropoff_location = extract_street_name(@ride.dropoff)
+end
   private
 
   def ride_params
