@@ -1,68 +1,46 @@
-<h1 class="text-center my-4 text-white">Request a Ride</h1>
 
-<div class="container p-4">
-  <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
-    <div class="card-body">
-      <%= simple_form_for @ride do |r| %>
+<div id=map data-controller="mapforshow" class="whole-map">
+</div>
+<div class="fixed-bottom">
+  <div class="d-flex justify-content-center">
+    <button class="octagonal-btn-sm btn btn-info m-1" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="true"></button>
+  </div>
+  <div class="collapse show" id="collapseExample">
+    <div class="polygon bg-primary p-0 pt-1">
+      <div class="polygon bg-success mx-1 mt-1 p-5">
+        <%= simple_form_for @ride do |r| %>
 
-        <div class="form-group mb-3"
-             data-controller="address-autocomplete"
-             data-address-autocomplete-api-key-value="<%= ENV["MAPBOX_API_KEY"] %>">
-          <%= r.input :pickup,
-            input_html: {
-              class: "d-none",
-              placeholder: "Enter pickup location...",
-              data: { address_autocomplete_target: "address" }
-            },
-            wrapper: false
-          %>
-        </div>
+          <!-- Pickup Field -->
+          <div class="form-group mb-4">
+            <%= r.label :pickup, "Local de Partida", class:"form-label fw-semibold text-dark text-uppercase" %>
+            <%= r.input :pickup,
+              input_html: {
+                data: { address_autocomplete_target: "address" },
+                class: "form-control d-none",
+                value: ""
+              },
+              wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] }, class: "" }
+            %>
+          </div>
 
-        <div class="form-group mb-3"
-             data-controller="address-autocomplete"
-             data-address-autocomplete-api-key-value="<%= ENV["MAPBOX_API_KEY"] %>">
-          <%= r.input :dropoff,
-            input_html: {
-              class: "d-none",
-              placeholder: "Enter dropoff location...",
-              data: { address_autocomplete_target: "address" }
-            },
-            wrapper: false
-          %>
-        </div>
+          <!-- Dropoff Field -->
+          <div class="form-group mb-4">
+            <%= r.label :dropoff, "Destino", class:"form-label fw-semibold text-dark text-uppercase" %>
+            <%= r.input :dropoff,
+              input_html: { data: { address_autocomplete_target: "address" }, class: "form-control d-none", value: "" },
+              wrapper_html: { data: { controller: "address-autocomplete", address_autocomplete_api_key_value: ENV["MAPBOX_API_KEY"] }, class: "" }
+            %>
+          </div>
 
-        <div class="text-center mt-4">
-          <%= r.submit "Request Ride", class: "btn btn-primary btn-lg px-5 py-2 fw-bold shadow" %>
-        </div>
+          <!-- Submit Button -->
+          <div class="">
+            <div class="text-center mt-4">
+            <%= r.submit "Bora!", class: "octagonal-btn btn btn-primary px-5 shadow fw-bold text-uppercase" %>
+            </div>
+          </div>
 
-      <% end %>
+        <% end %>
+      </div>
     </div>
   </div>
-
-  <div id="map"
-       class="map mt-4 rounded shadow-lg"
-       data-controller="map"
-       data-map-origin-value="<%= @origin.to_json %>"
-       data-map-destination-value="<%= @destination.to_json %>"
-       style="width: 100%; height: 400px; border-radius: 10px;">
-  </div>
 </div>
-
-<!-- Custom Styles for Autocomplete Dropdown -->
-<style>
-  /* Dropdown container */
-  .mapboxgl-ctrl-geocoder--suggestion {
-    background-color: #212529 !important; /* Dark dropdown */
-    color: #ffffff !important; /* White text */
-  }
-
-  /* Hover effect */
-  .mapboxgl-ctrl-geocoder--suggestion:hover {
-    background-color: #343a40 !important; /* Slightly lighter dark */
-  }
-
-  /* Active selection */
-  .mapboxgl-ctrl-geocoder--suggestion.active {
-    background-color: #495057 !important;
-  }
-</style>
