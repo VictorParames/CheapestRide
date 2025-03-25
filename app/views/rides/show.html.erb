@@ -1,82 +1,105 @@
+<<<<<<< HEAD
+=======
+<!-- app/views/rides/show.html.erb -->
+>>>>>>> c28154c5c0df9736bf66bc5036d6a4d0f932df9c
 <div class="show-container">
   <!-- Seção Origem - Destino -->
   <header class="route-header">
     <h1 class="route-title" style="color: #333;"><%= @pickup_location %> - <%= @dropoff_location %></h1>
-    <p style="color: #333;">Distância total: <%= @distance %> km, Duração total: <%= @duration %> minutos</p>
+    <div id="distance-duration">
+      <% if @distance && @duration %>
+        <p style="color: #333;">Distância total: <%= @distance %> km, Duração total: <%= @duration %> minutos</p>
+      <% else %>
+        <p style="color: #333;">Calculando distância e duração... <i class="fas fa-spinner fa-spin"></i></p>
+      <% end %>
+    </div>
   </header>
 
   <!-- Seção Possibilidades -->
-  <section class="options-section">
+  <section class="options-section" id="options-section">
     <h2 class="options-title" style="color: #333;">Possibilidades</h2>
-
-    <!-- Card Uber -->
-    <% if @uber_price && @uber_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title" style="color: yellow;">Uber</span>
+    <% if @distance && @duration %>
+      <!-- Card Uber -->
+      <% if @uber_price && @uber_price > 0 %>
+        <div class="option-card">
+          <div class="option-details">
+            <div class="option-icon-title">
+              <i class="fa-solid fa-car option-icon"></i>
+              <span class="option-title" style="color: yellow;">Uber</span>
+            </div>
+            <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@uber_price, unit: "", separator: ",", delimiter: "") %></span>
           </div>
-          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@uber_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
-      </div>
-    <% else %>
-      <p>Preço do Uber não disponível no momento.</p>
-    <% end %>
+      <% else %>
+        <p>Preço do Uber não disponível no momento.</p>
+      <% end %>
 
-    <!-- Card 99 -->
-    <% if @ninetynine_price && @ninetynine_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title" style="color: yellow;">99</span>
+      <!-- Card 99 -->
+      <% if @ninetynine_price && @ninetynine_price > 0 %>
+        <div class="option-card">
+          <div class="option-details">
+            <div class="option-icon-title">
+              <i class="fa-solid fa-car option-icon"></i>
+              <span class="option-title" style="color: yellow;">99</span>
+            </div>
+            <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@ninetynine_price, unit: "", separator: ",", delimiter: "") %></span>
           </div>
-          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@ninetynine_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
-      </div>
-    <% else %>
-      <p>Preço do 99 não disponível no momento.</p>
-    <% end %>
+      <% else %>
+        <p>Preço do 99 não disponível no momento.</p>
+      <% end %>
 
-    <!-- Card InDrive -->
-    <% if @indrive_price && @indrive_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-car option-icon"></i>
-            <span class="option-title" style="color: yellow;">InDrive</span>
+      <!-- Card InDrive -->
+      <% if @indrive_price && @indrive_price > 0 %>
+        <div class="option-card">
+          <div class="option-details">
+            <div class="option-icon-title">
+              <i class="fa-solid fa-car option-icon"></i>
+              <span class="option-title" style="color: yellow;">InDrive</span>
+            </div>
+            <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@indrive_price, unit: "", separator: ",", delimiter: "") %></span>
           </div>
-          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@indrive_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
-      </div>
-    <% else %>
-      <p>Preço do InDrive não disponível no momento.</p>
-    <% end %>
+      <% else %>
+        <p>Preço do InDrive não disponível no momento.</p>
+      <% end %>
 
-    <!-- Card Metrô -->
-    <% if @metro_price && @metro_price > 0 %>
-      <div class="option-card">
-        <div class="option-details">
-          <div class="option-icon-title">
-            <i class="fa-solid fa-train-subway option-icon"></i>
-            <span class="option-title" style="color: yellow;">Metrô</span>
+      <!-- Card Metrô -->
+      <% if @metro_price && @metro_price > 0 %>
+        <div class="option-card">
+          <div class="option-details">
+            <div class="option-icon-title">
+              <i class="fa-solid fa-train-subway option-icon"></i>
+              <span class="option-title" style="color: yellow;">Metrô</span>
+            </div>
+            <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@metro_price, unit: "", separator: ",", delimiter: "") %></span>
           </div>
-          <span class="option-price" style="color: yellow;">R$ <%= number_to_currency(@metro_price, unit: "", separator: ",", delimiter: "") %></span>
         </div>
-      </div>
+      <% else %>
+        <p>Preço do Metrô não disponível no momento.</p>
+      <% end %>
     <% else %>
-      <p>Preço do Metrô não disponível no momento.</p>
+      <p>Calculando preços... <i class="fas fa-spinner fa-spin"></i></p>
     <% end %>
   </section>
 
   <!-- Mapa -->
-  <div data-controller="map" id="map" class="map-container whole-map"
-       data-map-origin-value="<%= @origin.to_json %>"
-       data-map-destination-value="<%= @destination.to_json %>"
-       data-map-drive-value="<%= @drive_polyline %>"
-       data-map-transit-value="<%= @transit_polyline %>"
-       data-map-key-value="<%= ENV["MAPS_KEY"] %>">
+  <div class="map-wrapper" style="height: 500px; width: 100%;">
+    <div id="map-container">
+      <% if @origin && @destination && @origin[0] && @origin[1] && @destination[0] && @destination[1] %>
+        <div data-controller="map" id="map" class="map-container whole-map" style="height: 100%; width: 100%;"
+             data-map-origin-value="<%= @origin.to_json %>"
+             data-map-destination-value="<%= @destination.to_json %>"
+             data-map-drive-value="<%= @drive_polyline %>"
+             data-map-transit-value="<%= @transit_polyline %>"
+             data-map-key-value="<%= ENV["MAPS_KEY"] %>">
+        </div>
+      <% else %>
+        <p>Carregando mapa... <i class="fas fa-spinner fa-spin"></i></p>
+      <% end %>
+    </div>
   </div>
-</div>
 
+  <!-- Elemento para o ride-channel -->
+  <div id="ride-channel" data-ride-id="<%= @ride.id %>"></div>
+</div>
