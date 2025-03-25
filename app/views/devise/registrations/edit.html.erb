@@ -2,7 +2,7 @@
   <div class="container octagonal-lg bg-primary p-3">
     <div class="row-flex justify-content-center py-4 text-dark">
       <div class="col-12 py-5 px-1">
-        <h2>Edit <%= resource_name.to_s.humanize %></h2>
+        <h2>Edit <%= resource_name.to_s.humanize %> details </h2>
         <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
           <%= f.error_notification %>
 
@@ -15,28 +15,50 @@
               <p>Currently waiting confirmation for: <%= resource.unconfirmed_email %></p>
             <% end %>
 
-            <%= f.input :password,
-                        hint: "leave it blank if you don't want to change it",
-                        required: false,
-                        input_html: { autocomplete: "new-password", class: "text-dark" } %>
-            <%= f.input :password_confirmation,
-                        required: false,
-                        input_html: { autocomplete: "new-password", class: "text-dark" } %>
+            <div>
+              <a class="octagonal btn btn-success" data-bs-toggle="collapse" href="#collapsePassword" role="button" aria-expanded="false" aria-controls="collapsePassword">Change Password</a>
+              <div class="collapse" id="collapsePassword">
+                <%= f.input :password,
+                            hint: "leave it blank if you don't want to change it",
+                            required: false,
+                            input_html: { autocomplete: "new-password", class: "text-dark" } %>
+                <%= f.input :password_confirmation,
+                            required: false,
+                            input_html: { autocomplete: "new-password", class: "text-dark" } %>
+              </div>
+            </div>
+
+            <div class="my-2">
+              <a class="octagonal btn btn-success" data-bs-toggle="collapse" href="#collapseAvatar" role="button" aria-expanded="false" aria-controls="collapseAvatar">Change Avatar</a>
+              <div class="collapse" id="collapseAvatar">
+                <div class="row justify-content-around" data-controller="avatar"
+                       data-avatar-one-value="<%= asset_url("Avatar-1.png")%>"
+                       data-avatar-two-value="<%= asset_url("Avatar-2.png")%>"
+                       data-avatar-three-value="<%= asset_url("Avatar-3.png")%>"
+                       data-avatar-four-value="<%= asset_url("Avatar-4.png")%>"
+                       data-avatar-five-value="<%= asset_url("Avatar-5.png")%>">
+                  <div class="col-4">
+                    <%= f.input :avatar,
+                              as: :radio_buttons,
+                              collection: [["Avatar-1","Avatar-1"],["Avatar-2","Avatar-2"],["Avatar-3","Avatar-3"],["Avatar-4","Avatar-4"],["Avatar-5","Avatar-5"]],
+                              input_html: {data: {action: "change->avatar#change"}}%>
+                  </div>
+                    <div class="col-5 m-4 bg-success polygon">
+                        <%= image_tag "#{current_user.avatar}.png", size: "120x120", data: {avatar_target: "image"}, class: "my-1" %>
+                    </div>
+                </div>
+
+              </div>
+            </div>
             <%= f.input :current_password,
                         hint: "we need your current password to confirm your changes",
                         required: true,
                         input_html: { autocomplete: "current-password", class: "text-dark" } %>
-            <%= f.input :avatar,
-                        as: :radio_buttons,
-                        collection: [["Avatar-1","Avatar-1"],["Avatar-2","Avatar-2"],["Avatar-3","Avatar-3"],["Avatar-4","Avatar-4"],["Avatar-5","Avatar-5"]] %>
           </div>
-
           <div class="form-actions">
-            <%= f.button :submit, "Update" %>
+            <%= f.button :submit, "Update", class: "octagonal btn btn-success mb-1" %>
           </div>
         <% end %>
-        <h3>Cancel my account</h3>
-        <div>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %></div>
         <div class="text-dark">
           <%= link_to :back do %>
             <div class="octagonal btn btn-success my-1">Back</div>
