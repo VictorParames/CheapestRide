@@ -1,6 +1,5 @@
 # app/controllers/rides_controller.rb
 class RidesController < ApplicationController
-  before_action :authenticate_user!, only: [:create] # Garante que o usuário está autenticado
   before_action :set_ride, only: [:show, :ride_data]
 
   def index
