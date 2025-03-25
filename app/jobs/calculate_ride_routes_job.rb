@@ -3,6 +3,7 @@ class CalculateRideRoutesJob < ApplicationJob
   queue_as :default
 
   def perform(ride)
+    Rails.logger.info("Iniciando CalculateRideRoutesJob para o ride #{ride.id}")
     # Carregar dependências
     require "rest-client"
 
@@ -19,7 +20,11 @@ class CalculateRideRoutesJob < ApplicationJob
       transit_duration: 0,
       transit_polyline: "",
       nearest_metro_station_lat: nil,
-      nearest_metro_station_lng: nil
+      nearest_metro_station_lng: nil,
+      uber_price: nil,
+      ninetynine_price: nil,
+      indrive_price: nil,
+      metro_price: nil
     )
 
     # Executar os cálculos
@@ -29,21 +34,51 @@ class CalculateRideRoutesJob < ApplicationJob
     get_route_drive(ride)
     get_route_transit(ride)
 
+    # Calcular os preços usando o RidePriceService
+    calculate_prices(ride)
+
     # Após atualizar o Ride, transmitir os dados pelo ActionCable
     broadcast_update(ride)
+    Rails.logger.info("CalculateRideRoutesJob concluído para o ride #{ride.id}")
   end
 
   private
+
+  def calculate_prices(ride)
+    # Só calcular os preços se a distância e a duração forem válidas
+    return unless ride.distance && ride.duration && ride.distance > 0
+
+    # Inicializar o RidePriceService com a distância e duração
+    ride_price_service = RidePriceService.new(ride.distance, ride.duration)
+
+    # Calcular os preços para cada provedor
+    uber_price = ride_price_service.fetch_full_ride_price("Uber")
+    ninetynine_price = ride_price_service.fetch_full_ride_price("99")
+    indrive_price = ride_price_service.fetch_full_ride_price("InDrive")
+
+    # Calcular o preço do metrô (pode manter a lógica atual ou ajustar conforme necessário)
+    metro_price = ride.transit_distance > 0 ? 5.20 : 0
+
+    # Atualizar o Ride com os preços
+    ride.update(
+      uber_price: uber_price,
+      ninetynine_price: ninetynine_price,
+      indrive_price: indrive_price,
+      metro_price: metro_price
+    )
+
+    Rails.logger.info("Prices calculated - Uber: R$#{uber_price}, 99: R$#{ninetynine_price}, InDrive: R$#{indrive_price}, Metro: R$#{metro_price}")
+  end
 
   def broadcast_update(ride)
     # Preparar os dados para enviar ao cliente
     data = {
       distance: ride.distance,
       duration: ride.duration,
-      uber_price: calculate_uber_price(ride.distance),
-      ninetynine_price: calculate_99_price(ride.distance),
-      indrive_price: calculate_indrive_price(ride.distance),
-      metro_price: calculate_metro_price(ride.transit_distance),
+      uber_price: ride.uber_price,
+      ninetynine_price: ride.ninetynine_price,
+      indrive_price: ride.indrive_price,
+      metro_price: ride.metro_price,
       origin: [ride.pickup_lat, ride.pickup_lng],
       destination: [ride.dropoff_lat, ride.dropoff_lng],
       drive_polyline: ride.drive_polyline,
@@ -52,27 +87,8 @@ class CalculateRideRoutesJob < ApplicationJob
     }
 
     # Transmitir os dados pelo canal específico do ride
+    Rails.logger.info("Broadcasting to ride:#{ride.id} with data: #{data}")
     ActionCable.server.broadcast("ride:#{ride.id}", data)
-  end
-
-  def calculate_uber_price(distance)
-    # Lógica fictícia para calcular o preço do Uber
-    (distance * 2.5).round(2) # Exemplo: R$2,50 por km
-  end
-
-  def calculate_99_price(distance)
-    # Lógica fictícia para calcular o preço do 99
-    (distance * 2.0).round(2) # Exemplo: R$2,00 por km
-  end
-
-  def calculate_indrive_price(distance)
-    # Lógica fictícia para calcular o preço do InDrive
-    (distance * 1.8).round(2) # Exemplo: R$1,80 por km
-  end
-
-  def calculate_metro_price(transit_distance)
-    # Lógica fictícia para calcular o preço do Metrô
-    transit_distance > 0 ? 4.40 : 0 # Exemplo: tarifa fixa de R$4,40 em São Paulo
   end
 
   def find_geocode(ride)

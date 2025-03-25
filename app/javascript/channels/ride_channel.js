@@ -1,29 +1,31 @@
 // app/javascript/channels/ride_channel.js
-import consumer from "./consumer"
+import consumer from "./consumer";
 
-consumer.subscriptions.create("RideChannel", {
-  // Função chamada quando o cliente se conecta ao canal
-  connected() {
-    console.log("Connected to RideChannel")
-  },
+document.addEventListener("DOMContentLoaded", () => {
+  const rideChannelElement = document.getElementById("ride-channel");
+  if (!rideChannelElement) {
+    console.error("Elemento #ride-channel não encontrado!");
+    return;
+  }
 
-  // Função chamada quando o cliente se desconecta do canal
-  disconnected() {
-    console.log("Disconnected from RideChannel")
-  },
+  const rideId = rideChannelElement.dataset.rideId;
+  if (!rideId) {
+    console.error("ride_id não encontrado no elemento #ride-channel!");
+    return;
+  }
 
-  // Função chamada quando uma mensagem é recebida do servidor
-  received(data) {
-    console.log("Received data:", data)
+  // Função para atualizar a página com os dados recebidos
+  const updatePage = (data) => {
+    console.log("Dados recebidos:", data);
 
     // Atualizar a seção de distância e duração
-    const routeHeader = document.querySelector(".route-header p");
+    const distanceDuration = document.getElementById("distance-duration");
     if (data.distance && data.duration) {
-      routeHeader.innerText = `Distância total: ${data.distance} km, Duração total: ${data.duration} minutos`;
+      distanceDuration.innerHTML = `<p style="color: #333;">Distância total: ${data.distance} km, Duração total: ${data.duration} minutos</p>`;
     }
 
     // Atualizar a seção de possibilidades (preços)
-    const optionsSection = document.querySelector(".options-section");
+    const optionsSection = document.getElementById("options-section");
     if (data.uber_price || data.ninetynine_price || data.indrive_price || data.metro_price) {
       let html = '<h2 class="options-title" style="color: #333;">Possibilidades</h2>';
 
@@ -100,7 +102,7 @@ consumer.subscriptions.create("RideChannel", {
 
     // Atualizar o mapa
     if (data.origin && data.destination && data.drive_polyline && data.transit_polyline) {
-      const mapContainer = document.querySelector(".map-wrapper");
+      const mapContainer = document.getElementById("map-container");
       mapContainer.innerHTML = `
         <div data-controller="map" id="map" class="map-container whole-map" style="height: 100%; width: 100%;"
              data-map-origin-value='${JSON.stringify(data.origin)}'
@@ -111,11 +113,47 @@ consumer.subscriptions.create("RideChannel", {
         </div>
       `;
       // Reativar o controlador Stimulus para o mapa
-      Stimulus.controllers.forEach(controller => {
-        if (controller.identifier === "map") {
-          controller.connect();
-        }
-      });
+      if (window.Stimulus) {
+        Stimulus.controllers.forEach(controller => {
+          if (controller.identifier === "map") {
+            controller.connect();
+          }
+        });
+      }
     }
-  }
+  };
+
+  // Fazer uma requisição AJAX inicial para obter os dados mais recentes
+  fetch(`/rides/${rideId}/ride_data`, {
+    headers: {
+      "Accept": "application/json"
+    }
+  })
+    .then(response => response.json())
+    .then(data => {
+      console.log("Dados recebidos da requisição AJAX inicial:", data);
+      if (data.distance && data.duration) {
+        updatePage(data);
+      }
+    })
+    .catch(error => {
+      console.error("Erro ao buscar dados iniciais:", error);
+    });
+
+  // Conectar ao RideChannel para atualizações em tempo real
+  consumer.subscriptions.create(
+    { channel: "RideChannel", ride_id: rideId },
+    {
+      connected() {
+        console.log(`Conectado ao RideChannel para o ride ${rideId}`);
+      },
+      disconnected() {
+        console.log(`Desconectado do RideChannel para o ride ${rideId}`);
+      },
+      received(data) {
+        console.log("Dados recebidos via ActionCable:", data);
+        updatePage(data);
+      }
+    }
+  );
 });

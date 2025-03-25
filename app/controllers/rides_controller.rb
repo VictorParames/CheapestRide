@@ -1,7 +1,7 @@
 # app/controllers/rides_controller.rb
 class RidesController < ApplicationController
   before_action :authenticate_user!, only: [:create] # Garante que o usuário está autenticado
-  before_action :set_ride, only: [:show]
+  before_action :set_ride, only: [:show, :ride_data]
 
   def index
     @ride = Ride.new
@@ -17,20 +17,27 @@ class RidesController < ApplicationController
     @origin = [@ride.pickup_lat, @ride.pickup_lng]
     @destination = [@ride.dropoff_lat, @ride.dropoff_lng]
 
-    # Calcular preços apenas se distance e duration estiverem disponíveis
-    if @distance && @duration
-      price_service = RidePriceService.new(@distance, @duration)
-      @uber_price = price_service.fetch_full_ride_price("Uber")
-      @ninetynine_price = price_service.fetch_full_ride_price("99")
-      @indrive_price = price_service.fetch_full_ride_price("InDrive")
-    else
-      @uber_price = nil
-      @ninetynine_price = nil
-      @indrive_price = nil
-    end
+    # Usar os preços salvos no Ride (calculados pelo CalculateRideRoutesJob)
+    @uber_price = @ride.uber_price
+    @ninetynine_price = @ride.ninetynine_price
+    @indrive_price = @ride.indrive_price
+    @metro_price = @ride.metro_price
+  end
 
-    # Preço fixo do metrô
-    @metro_price = @ride.transit_distance && @ride.transit_distance > 0 ? 5.20 : nil
+  def ride_data
+    render json: {
+      distance: @ride.distance,
+      duration: @ride.duration,
+      uber_price: @ride.uber_price,
+      ninetynine_price: @ride.ninetynine_price,
+      indrive_price: @ride.indrive_price,
+      metro_price: @ride.metro_price,
+      origin: [@ride.pickup_lat, @ride.pickup_lng],
+      destination: [@ride.dropoff_lat, @ride.dropoff_lng],
+      drive_polyline: @ride.drive_polyline,
+      transit_polyline: @ride.transit_polyline,
+      map_key: ENV["MAPS_KEY"]
+    }
   end
 
   def new
@@ -51,6 +58,7 @@ class RidesController < ApplicationController
     @ride = Ride.new(ride_params)
     @ride.user = current_user
     if @ride.save
+      CalculateRideRoutesJob.perform_later(@ride)
       redirect_to @ride, notice: "Ride was successfully created."
     else
       flash.now[:alert] = @ride.errors.full_messages.to_sentence
