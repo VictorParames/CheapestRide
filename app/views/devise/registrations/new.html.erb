@@ -1,9 +1,9 @@
-<div class="d-flex justify-content-center align-items-center min-vh-100 bg-black">
+<div class="d-flex justify-content-center align-items-center min-vh-100 bg-success">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-sm-10 col-md-6 col-lg-4">
-        <div class="glass-card text-white p-4 p-md-5 rounded-4 shadow-lg">
-          <h2 class="text-center fw-bold mb-3">Sign Up</h2>
+        <div class="glass-card text-dark p-4 p-md-5 rounded-4 shadow-lg">
+          <h2 class="text-center text-primary fw-bold mb-3">Sign Up</h2>
           <p class="text-center text-secondary mb-4">Create an account to get started</p>
 
           <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
@@ -11,27 +11,27 @@
 
             <div class="mb-3">
               <%= f.input :email, required: true, autofocus: true,
-                input_html: { autocomplete: "email", class: "form-control input-style py-2 rounded-3" } %>
+                input_html: { autocomplete: "email", class: "form-control input-style py-2 rounded-3 text-dark border-secondary" } %>
             </div>
 
             <div class="mb-3">
                <%= f.input :password, required: true,
-                  hint: ("<span style='color: white;'>#{@minimum_password_length} characters minimum</span>".html_safe if @minimum_password_length),
-                 input_html: { autocomplete: "new-password", class: "form-control input-style py-2 rounded-3" } %>
+                  hint: ("<span style='color: black;'>#{@minimum_password_length} characters minimum</span>".html_safe if @minimum_password_length),
+                 input_html: { autocomplete: "new-password", class: "form-control input-style py-2 rounded-3 text-dark border-secondary" } %>
               </div>
 
             <div class="mb-3">
               <%= f.input :password_confirmation, required: true,
-                input_html: { autocomplete: "new-password", class: "form-control input-style py-2 rounded-3" } %>
+                input_html: { autocomplete: "new-password", class: "form-control input-style py-2 rounded-3 text-dark border-secondary" } %>
             </div>
 
             <div class="d-grid">
-              <%= f.button :submit, "Sign up", class: "btn btn-light fw-bold py-2 rounded-3 shadow-sm btn-hover" %>
+              <%= f.button :submit, "Sign up", class: "btn btn-primary fw-bold py-2 rounded-3 shadow-sm btn-hover" %>
             </div>
 
-            <div class="text-center mt-3" style="color: white;">
-            <%= render "devise/shared/links" %>
-          </div>
+            <div class="text-center mt-3">
+              <%= render "devise/shared/links" %>
+            </div>
 
           <% end %>
         </div>
@@ -39,43 +39,3 @@
     </div>
   </div>
 </div>
-
-<style>
-  /* Glassmorphism effect for a modern feel */
-  .glass-card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
-  }
-
-  /* Input Field Styling */
-  .input-style {
-    background: rgba(255, 255, 255, 0.1) !important;
-    border: none;
-    color: #fff !important;
-    transition: all 0.3s ease-in-out;
-  }
-
-  .input-style::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-  }
-
-  .input-style:focus {
-    background: rgba(255, 255, 255, 0.2) !important;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-  }
-
-  /* Button Hover Effect */
-  .btn-hover:hover {
-    background-color: #ddd !important;
-    color: #000 !important;
-    transform: translateY(-2px);
-    transition: all 0.2s ease-in-out;
-  }
-
-
-
-
-  </style>
