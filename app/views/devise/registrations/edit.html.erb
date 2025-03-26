@@ -41,9 +41,10 @@
                     <%= f.input :avatar,
                               as: :radio_buttons,
                               collection: [["Avatar-1","Avatar-1"],["Avatar-2","Avatar-2"],["Avatar-3","Avatar-3"],["Avatar-4","Avatar-4"],["Avatar-5","Avatar-5"]],
-                              input_html: {data: {action: "change->avatar#change"}}%>
+                              input_html: {data: {action: "change->avatar#change"}},
+                              wrapper_html: {class: ""}%>
                   </div>
-                    <div class="col-5 m-4 bg-success polygon">
+                    <div class="col-5 m-4 bg-success">
                         <%= image_tag "#{current_user.avatar}.png", size: "120x120", data: {avatar_target: "image"}, class: "my-1" %>
                     </div>
                 </div>
