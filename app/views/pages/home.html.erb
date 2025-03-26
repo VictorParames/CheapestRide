@@ -1,23 +1,17 @@
 <!-- Fullscreen Container with Dark Overlay -->
 <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 position-relative" style= "background-color: #F5F5F5;">
-  <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: #E9E9E9;"></div>
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-primary"></div>
 
   <!-- Card Container -->
-  <div class="text-center bg-white p-5 rounded-4 shadow-lg position-relative d-flex flex-column align-items-center" style="max-width: 1000px; width: 90%;">
+  <div class="octagonal text-center bg-white p-5 rounded-4 shadow-lg position-relative d-flex flex-column align-items-center" style="max-width: 1000px; width: 90%;">
 
     <!-- User Photo -->
-    <div class="mb-4">
-      <%= image_tag "boat.jpeg", class: "rounded-circle shadow border border-3 border-white", alt: "User Photo", width: 120 %>
-    </div>
-
-    <!-- Main Heading -->
-    <h1 class="display-4 fw-bold text-primary mb-3">Para onde vamos?</h1>
 
     <!-- Subheading -->
-    <p class="lead text-secondary mb-4">Descubra seu próximo destino de forma fácil, rápida e segura.</p>
+    <h1 class="lead text-secondary mb-4">Suas corridas em um so lugar!</h1>
 
     <!-- Call to Action Button -->
-<%= link_to new_ride_path, class: "btn btn-primary btn-lg octagonal px-5 py-10 fw-bold shadow d-flex align-items-center gap-2 transition-transform hover-scale" do %>
+<%= link_to new_ride_path, class: "octagonal btn btn-primary btn-lg octagonal px-5 py-10 fw-bold shadow d-flex align-items-center gap-2 transition-transform hover-scale" do %>
   <i class="fas fa-location-arrow"></i> Bora!
 <% end %>
 

@@ -11,6 +11,10 @@
   height: 16px;
   width: 87px;
 }
+.octagonal-btn-wide {
+  clip-path: polygon(10% 0, 90% 0, 100% 30%, 100% 70%, 90% 100%, 10% 100%, 0 70%, 0 30%);
+  width: 100%;
+}
 .octagonal-profile {
   clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
   height: 56px;
