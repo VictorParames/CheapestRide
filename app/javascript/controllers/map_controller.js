@@ -70,7 +70,7 @@ export default class extends Controller {
         geodesic: true,
         strokeColor: "#9600ED",
         strokeOpacity: 1.0,
-        strokeWeight: 7
+        strokeWeight: 3
         });
         drive_route.setMap(map);
 
