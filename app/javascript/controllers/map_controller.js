@@ -63,7 +63,7 @@ export default class extends Controller {
         // console.log(destination)
         bounds.extend(origin);
         bounds.extend(destination);
-        map.fitBounds(bounds);
+        map.fitBounds(bounds, {top:100, bottom:350});
 
         const drive_route = new Polyline({
         path: encoding.decodePath(drivePolyline),
