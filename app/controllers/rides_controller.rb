@@ -57,7 +57,7 @@ class RidesController < ApplicationController
     @ride = Ride.new(ride_params)
     @ride.user = current_user
     if @ride.save
-      CalculateRideRoutesJob.perform_later(@ride)
+      CalculateRideRoutesJob.perform_now(@ride)
       redirect_to @ride, notice: "Ride was successfully created."
     else
       flash.now[:alert] = @ride.errors.full_messages.to_sentence
