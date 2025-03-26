@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<%= if @uber_price do %>
+<%= if @uber_price %>
   <% if @origin && @destination && @origin[0] && @origin[1] && @destination[0] && @destination[1] %>
     <div data-controller="map" id="map" class="map-container whole-map" style="height: 100%; width: 100%;"
           data-map-origin-value="<%= @origin.to_json %>"
