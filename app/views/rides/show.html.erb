@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-center">
     <button class="octagonal bg-primary p-3 btn" data-bs-toggle="collapse" data-bs-target="#collapseTime">
       <div class="text-dark mx-1"><%= @pickup_location %> → <%= @dropoff_location %></div>
-      <div class="collapse text-dark m-3" id="collapseTime">
+      <div class="collapse text-dark mt-3" id="collapseTime">
         <% if @distance && @duration %>
           <div class="">Distância: <%= @distance %> km</div>
           <div>Previsao de chegada: <%= @duration %> minutos</div>
