@@ -14,18 +14,20 @@
   </div>
 </div>
 
-<% if @origin && @destination && @origin[0] && @origin[1] && @destination[0] && @destination[1] %>
-  <div data-controller="map" id="map" class="map-container whole-map" style="height: 100%; width: 100%;"
-        data-map-origin-value="<%= @origin.to_json %>"
-        data-map-destination-value="<%= @destination.to_json %>"
-        data-map-drive-value="<%= @drive_polyline %>"
-        data-map-transit-value="<% if @uber_price < 1000 %><%= @transit_polyline %><% end %>"
-        data-map-key-value="<%= ENV["MAPS_KEY"] %>"
-        data-map-pickup-value="<%= @pickup_location %>"
-        data-map-dropoff-value="<%= @dropoff_location %>">
-  </div>
-<% else %>
-  <p>Carregando mapa... <i class="fas fa-spinner fa-spin"></i></p>
+<%= if @uber_price do %>
+  <% if @origin && @destination && @origin[0] && @origin[1] && @destination[0] && @destination[1] %>
+    <div data-controller="map" id="map" class="map-container whole-map" style="height: 100%; width: 100%;"
+          data-map-origin-value="<%= @origin.to_json %>"
+          data-map-destination-value="<%= @destination.to_json %>"
+          data-map-drive-value="<%= @drive_polyline %>"
+          data-map-transit-value="<% if @uber_price < 1000 %><%= @transit_polyline %><% end %>"
+          data-map-key-value="<%= ENV["MAPS_KEY"] %>"
+          data-map-pickup-value="<%= @pickup_location %>"
+          data-map-dropoff-value="<%= @dropoff_location %>">
+    </div>
+  <% else %>
+    <p>Carregando mapa... <i class="fas fa-spinner fa-spin"></i></p>
+  <% end %>
 <% end %>
 
 <div class="fixed-bottom">
