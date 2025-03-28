@@ -64,7 +64,11 @@ class RidesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
   end
-
+def destination
+    @ride = Ride.find(params[:id])
+    @destination = [@ride.dropoff_lat, @ride.dropoff_lng]
+    @dropoff_location = extract_street_name(@ride.dropoff)
+end
   private
 
   def set_ride
